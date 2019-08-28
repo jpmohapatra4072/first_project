@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<!-- <div class="container"> -->
+
+			<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			  <a class="navbar-brand" href="/">First Project</a>
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+			    <span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <!-- <div class="collapse navbar-collapse" id="navbarColor01">
+			    <ul class="navbar-nav mr-auto">
+			      <li class="nav-item active">
+			        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" href="#">Features</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" href="#">Pricing</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" href="#">About</a>
+			      </li>
+			    </ul>
+			    <form class="form-inline my-2 my-lg-0">
+			      <input class="form-control mr-sm-2" type="text" placeholder="Search">
+			      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+			    </form>
+			  </div> -->
+			</nav><br><br>
+			<%if flash[:notice]%>
+				<div class="alert alert-dismissible alert-info" style="width: 80%;margin-left: 10%;">
+				  <button type="button" class="close" data-dismiss="alert">&times;</button>
+				  <%=flash[:notice]%>
+				</div>
+			<%elsif flash[:alert]%>
+				<div class="alert alert-dismissible alert-danger" style="width: 80%;margin-left: 10%;">
+				  <button type="button" class="close" data-dismiss="alert">&times;</button>
+				  <%=flash[:alert]%>
+				</div>
+			<%end%>
+			<div class="jumbotron" style="margin-top: 8%;width: 60%;margin-left: 20%;">
+				<%if user_signed_in?%>
+					<h4>Hii <%= current_user.try(:first_name)%></h4>
+					<h4><%= link_to('Logout', destroy_user_session_path, method: :delete) %> </h4>
+				<%else%>
+					<h3>Welcome</h3>
+					<h4><%= link_to('Login', new_user_session_path) %> if you already have registered or <%= link_to('Sign Up', new_user_registration_path) %> to register</h4>
+				<%end%>
+			</div>
+		<!-- </div> -->
+	</body>
+</html>

@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="jumbotron" style="margin-top: 5%;width: 50%;margin-left: 25%;">
+    <h3>Sign up</h3><br>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="form-group col-md-12">
+          <%= f.label :first_name %><span>*</span>
+          <%= f.text_field :first_name, autofocus: true, class: "form-control"%>
+        </div>
+
+        <div class="form-group col-md-12">
+          <%= f.label :last_name %><span>*</span>
+          <%= f.text_field :last_name, class: "form-control"%>
+        </div>
+
+        <div class="form-group col-md-12">
+          <%= f.label :dob %><span>*</span>
+          <%= f.date_field :dob, class: "form-control", max: Date.new(Date.today.year-18, 01, 01)%>
+        </div>
+
+        <div class="form-group col-md-12">
+          <%= f.label :shipping_address %>
+          <%= f.text_area :shipping_address, class: "form-control", max: Date.new(Date.today.year-18, 01, 01)%>
+        </div>
+
+        <div class="form-group col-md-12">
+          <%= f.label :billing_address %>
+          <%= f.text_area :billing_address, class: "form-control", max: Date.new(Date.today.year-18, 01, 01)%>
+        </div>
+
+        <div class="form-group col-md-12">
+          <%= f.label :email %><span>*</span><br />
+          <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+        </div>
+
+        <div class="form-group col-md-12">
+          <%= f.label :password %><span>*</span>
+          <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %><br />
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-control"  %>
+        </div>
+
+        <div class="form-group col-md-12">
+          <%= f.label :password_confirmation %><span>*</span>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+        </div>
+      <br>
+
+      <div class="form-group col-md-12">
+        <%= f.submit "Sign up", class: "btn btn-primary" %>
+        <%= link_to "Cancel", "/", class: "btn btn-secondary" %>
+      </div><br>
+    <% end %>
+
+    <div class="form-group col-md-12">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  $.validator.addMethod("pwcheck", function(value) {
+     if(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(value))
+     {
+      return true;
+     }else{
+      $.validator.messages.pwcheck = 'must be of 8 characters, should contain atleast a capital, a special char and a number';
+      return false;
+     }
+  });
+
+  $('#new_user').validate({ // initialize the plugin
+    rules: {
+      "user[first_name]": {
+        required: true,
+      },
+      "user[last_name]": {
+        required: true,
+      },
+      "user[dob]": {
+        required: true,
+      },
+      "user[password]": {
+        required: true,
+        pwcheck: true,
+        minlength: 8
+      },
+      "user[password_confirmation]": {
+        required: true,
+      },
+      "user[email]": {
+        required: true,
+        email: true
+      }
+    }
+  });
+</script>
