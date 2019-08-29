@@ -93,4 +93,16 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.default_url_options = { :host => 'https://protected-falls-57926.herokuapp.com' }
+
+  ActionMailer::Base.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.default :charset => "utf-8"
+  ActionMailer::Base.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :user_name            => "jpmohapatra.andolasoft@gmail.com",
+    :password             => 'Jpm@4072',
+    :authentication       => "plain",
+    :enable_starttls_auto => true
+  }
 end
