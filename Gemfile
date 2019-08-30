@@ -64,3 +64,12 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # for authentication
 gem 'devise', '~> 4.4', '>= 4.4.3'
+
+# for google authentication
+gem 'omniauth-google-oauth2', '~> 0.6.0'
+
+# for facebook authentication
+gem 'omniauth-facebook'
+
+# for debuggin
+gem 'pry', '~> 0.10.3'

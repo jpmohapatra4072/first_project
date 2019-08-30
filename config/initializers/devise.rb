@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require "omniauth-google-oauth2"
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -296,4 +296,16 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+
+
+  # Add the credentials from your Google application to your secrets  
+  client_id = '764091650680-61deqj3ebe1cgs98h9j94k1hbqjefd0m.apps.googleusercontent.com'
+  client_secret = 'c204XW38SY0or2T4WWwoKTNf'
+  # Configure Google omniauth with proper scope
+  config.omniauth :google_oauth2, client_id, client_secret, {
+    # scope: "contacts.readonly,userinfo.email"
+    :redirect_uri => "http://localhost:3000/users/auth/google_oauth2/callback"
+  }
+
+  config.omniauth :facebook, "397177474272014", "edd98a32ce925050050c3ce0c30d1bec"
 end
