@@ -6,28 +6,58 @@
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= f.hidden_field :reset_password_token %>
 
-      <div class="row">
-        <div class="col-md-10">
-          <%= f.label :password, "New password" %><br />
-          <% if @minimum_password_length %>
-            <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-          <% end %>
-          <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-        </div>
+      <div class="form-group col-md-12">
+        <%= f.label :password, "New password" %><span>*</span><br />
+        <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+        <% end %>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
       </div>
 
-      <div class="row">
-        <div class="col-md-10">
-          <%= f.label :password_confirmation, "Confirm new password" %><br />
-          <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-        </div>
+      <div class="form-group col-md-12">
+        <%= f.label :password_confirmation, "Confirm new password" %><span>*</span><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
       </div>
 
-      <div class="actions">
-        <%= f.submit "Change my password" %>
+      <div class="form-group col-md-12">
+        <%= f.submit "Change my password", class: "btn btn-primary" %>
+        <%= link_to "Cancel", "/", class: "btn btn-secondary" %>
       </div>
     <% end %>
 
-    <%= render "devise/shared/links" %>
+    <div class="form-group col-md-12">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
 </div>
+
+<script type="text/javascript">
+
+  $.validator.addMethod("pwcheck", function(value) {
+     if(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(value))
+     {
+      return true;
+     }else{
+      $.validator.messages.pwcheck = 'must be of 8 characters, should contain atleast a capital, a special char and a number';
+      return false;
+     }
+  });
+  
+  $('#new_user').validate({ // initialize the plugin
+    rules: {
+      "user[password]": {
+        required: true,
+        pwcheck: true,
+        minlength: 8
+      },
+      "user[password_confirmation]": {
+        required: true,
+        equalTo : "#user_password"
+      }
+    }
+  });
+
+  jQuery.extend(jQuery.validator.messages, {
+    equalTo: "Should be same as password!!"
+  });
+</script>

@@ -92,11 +92,16 @@
       },
       "user[password_confirmation]": {
         required: true,
+        equalTo : "#user_password"
       },
       "user[email]": {
         required: true,
         email: true
       }
     }
+  });
+
+  jQuery.extend(jQuery.validator.messages, {
+    equalTo: "Should be same as password!!"
   });
 </script>
