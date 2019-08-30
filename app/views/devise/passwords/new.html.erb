@@ -23,4 +23,27 @@
 </div>
 
 
+<script type="text/javascript">
+
+  $.validator.addMethod("pwcheck", function(value) {
+     if(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(value))
+     {
+      return true;
+     }else{
+      $.validator.messages.pwcheck = 'must be of 8 characters, should contain atleast a capital, a special char and a number';
+      return false;
+     }
+  });
+  
+  $('#new_user').validate({ // initialize the plugin
+    rules: {
+      "user[email]": {
+        required: true,
+        email: true
+      }
+    }
+  });
+</script>
+
+
 

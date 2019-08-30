@@ -305,8 +305,12 @@ Devise.setup do |config|
   config.omniauth :google_oauth2, client_id, client_secret, {
     # scope: "contacts.readonly,userinfo.email"
     # :redirect_uri => "http://localhost:3000/users/auth/google_oauth2/callback"
+    # for heroku
     :redirect_uri => "https://protected-falls-57926.herokuapp.com/users/auth/google_oauth2/callback"
   }
 
-  config.omniauth :facebook, "397177474272014", "edd98a32ce925050050c3ce0c30d1bec"
+  config.omniauth :facebook, "397177474272014", "edd98a32ce925050050c3ce0c30d1bec", {
+    # for heroku
+    :redirect_uri => "https://protected-falls-57926.herokuapp.com/users/auth/facebook/callback"
+  }
 end
