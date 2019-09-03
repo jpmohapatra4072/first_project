@@ -1,0 +1,87 @@
+<div class="container">    
+  <div class="row">
+    <div class="panel panel-default" style="width: 100%;">
+      <div class="panel-heading"><h4>Artist Profile</h4></div><br>
+      <div class="panel-body">
+        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+          <%= image_tag @artist.image.url(:medium) %>
+        </div>
+        <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8" >
+          <div class="container" >
+            <h2><%= "#{ @artist.first_name} #{ @artist.last_name}" %></h2>
+          </div>
+          <hr>
+          <ul class="container details">                    
+            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"><b>Email: </b></span><%= @artist.email %></p></li>
+            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"><b>Role: </b></span><%= @artist.role.try(:name) %></p></li>
+            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"><b>Shipping address: </b></span><%= @artist.try(:shipping_address) %></p></li>
+            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"><b>Billing address: </b></span><%= @artist.try(:billing_address) %></p></li>
+            <li><p><span class="glyphicon glyphicon-envelope one" style="width:50px;"><b>Date of birth: </b></span><%= @artist.try(:dob) %></p></li>
+          </ul>
+          <hr>
+          <%= link_to "edit profile", edit_user_registration_path(@artist), :class => "btn btn-info" if @artist.eql? current_user%>
+        	<%= link_to 'Back', "/", class: "btn btn-info"%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <div class="row">
+    <%if current_user%>
+      <div class="form-group col-md-12">
+        <h4>Upload paintings</h4>
+        <hr>
+      </div>
+      <div class="form-group col-md-4">
+        <%@painting = Painting.new%>
+        <%= form_for @painting, url: upload_paintings_path(id: @artist.id), html: { multipart: true} do |f| %>
+          <%= f.label :name, "Painting Name" %>
+          <%= f.text_field :name, class: 'form-control'%><br/>
+          <%= f.label :painting, "Painting File" %>
+          <%= f.file_field :painting, class: 'form-control' %><br/>
+          <%= f.submit "Add Painting",class: 'btn btn-primary'  %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <br>
+  <br>
+	<!-- for painting upload -->
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Paintings</h4>
+      <hr>
+    </div>
+    <%if @artist.paintings.empty?%>
+        <h3>No Paintings Added!!</h3>
+    <%else%>
+      <%@paintins_array.each do |curr_obj|%>
+        <div class="col-md-3">
+          <div class="thumbnail" style="height: 200px;">
+            <div style="height: 70%;" align="center">
+              <%= image_tag curr_obj.painting.present? ? curr_obj.painting.url(:medium) : 'http://placehold.it/320x200', style: "height: 150px;"%>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+  $('#new_painting').validate({ // initialize the plugin
+    rules: {
+      "painting[name]": {
+        required: true,
+      },
+      "painting[painting]": {
+        required: true,
+      }
+    }
+  });
+</script>
