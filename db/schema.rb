@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_29_084914) do
+ActiveRecord::Schema.define(version: 2019_09_02_110300) do
+
+  create_table "paintings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id"
+    t.string "painting_file_name"
+    t.string "painting_content_type"
+    t.integer "painting_file_size"
+    t.datetime "painting_updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_paintings_on_user_id"
+  end
+
+  create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "first_name", default: "", null: false
@@ -36,6 +54,11 @@ ActiveRecord::Schema.define(version: 2019_08_29_084914) do
     t.integer "expires_at"
     t.boolean "expires"
     t.string "refresh_token"
+    t.integer "role_id"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

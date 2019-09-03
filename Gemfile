@@ -73,3 +73,7 @@ gem 'omniauth-facebook'
 
 # for debuggin
 gem 'pry', '~> 0.10.3'
+
+# for attachment
+gem "paperclip", "~> 6.0.0"
+

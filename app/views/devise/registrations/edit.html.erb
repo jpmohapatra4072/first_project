@@ -1,43 +1,114 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <div class="jumbotron" style="margin-top: 5%;width: 50%;margin-left: 25%;">
+    <h3>Edit Profile</h3><br>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+      <div class="form-group col-md-12">
+        <%= f.label :first_name %><span>*</span>
+        <%= f.text_field :first_name, autofocus: true, class: "form-control"%>
+      </div>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <div class="form-group col-md-12">
+        <%= f.label :last_name %><span>*</span>
+        <%= f.text_field :last_name, class: "form-control"%>
+      </div>
+
+      <div class="form-group col-md-12">
+        <%= f.label :dob %><span>*</span>
+        <%= f.date_field :dob, class: "form-control", max: Date.new(Date.today.year-18, 01, 01)%>
+      </div>
+
+      <div class="form-group col-md-12">
+        <%= f.label :shipping_address %>
+        <%= f.text_area :shipping_address, class: "form-control", max: Date.new(Date.today.year-18, 01, 01)%>
+      </div>
+
+      <div class="form-group col-md-12">
+        <%= f.label :billing_address %><br>
+        <%= check_box_tag "", '', false, class: 'same_address'%>Same as Shipping address
+        <%= f.text_area :billing_address, class: "form-control", max: Date.new(Date.today.year-18, 01, 01)%>
+      </div>
+
+      <div class="form-group col-md-12">
+        <%= f.label :email %><span>*</span><br />
+        <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+      </div>
+
+      <div class="form-group col-md-6">
+        <%= f.label :role_id, "Role" %>*<br />
+        <%=f.select :role_id,  @roles.present? ? @roles : {} , {:include_blank => 'Select'}, :class=>"form-control"%>
+      </div>
+
+      <div class="form-group col-md-6">
+        <%= f.label :image, "Profile Image" %>*<br />
+        <%= f.file_field :image %>
+        <%= image_tag f.object.image.url(:medium) if f.object.image.present? %>
+      </div>
+      <br>
+
+      <div class="form-group col-md-12">
+        <%= f.submit "Update Profile", class: "btn btn-primary" %>
+        <%= link_to "Cancel", artist_profile_path(id: f.object.id), class: "btn btn-secondary" %>
+      </div><br>
     <% end %>
+
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
+<script type="text/javascript">
 
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
+  $.validator.addMethod("pwcheck", function(value) {
+     if(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(value))
+     {
+      return true;
+     }else{
+      $.validator.messages.pwcheck = 'must be of 8 characters, should contain atleast a capital, a special char and a number';
+      return false;
+     }
+  });
 
-<h3>Cancel my account</h3>
+  $('#edit_user').validate({ // initialize the plugin
+    rules: {
+      "user[first_name]": {
+        required: true,
+      },
+      "user[last_name]": {
+        required: true,
+      },
+      "user[dob]": {
+        required: true,
+      },
+      "user[password]": {
+        required: true,
+        pwcheck: true,
+        minlength: 8
+      },
+      "user[password_confirmation]": {
+        required: true,
+        equalTo : "#user_password"
+      },
+      "user[email]": {
+        required: true,
+        email: true
+      },
+      "user[role_id]": {
+        required: true,
+      }
+    }
+  });
 
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+  jQuery.extend(jQuery.validator.messages, {
+    equalTo: "Should be same as password!!"
+  });
 
-<%= link_to "Back", :back %>
+  $(".same_address").change(function() {
+    if($(this).is(":checked")){
+      $("#user_billing_address").val($("#user_shipping_address").val())
+    }else{
+      $("#user_billing_address").val('')
+    }
+  })
+</script>
