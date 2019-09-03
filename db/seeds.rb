@@ -3,5 +3,19 @@
 #
 # Examples:
 #
-  roles = Role.create([{ name: 'Admin' }, { name: 'Customer' }])
+  roles = Role.create([{ name: 'Admin' }, { name: 'Customer' }]) unless Role.first.present?
+  user = User.new(
+  	:first_name			   => "jyoti",
+  	:last_name			   => "mohapatra",
+  	:email                 => "jyotiprakashm@mindfiresolutions.com",
+  	:password              => "Test@123",
+  	:password_confirmation => "Test@123",
+  	:role_id			   => Role.first.id,
+  	:image 			   	   => File.new(Rails.root.join('app', 'assets', 'images', 'user.jpg'))
+  )
+  user.skip_confirmation!
+  if user.save
+  	user.paintings.build({name: 'first_painting', painting: File.new(Rails.root.join('app', 'assets', 'images', 'painting.jpg')) })
+  	user.save
+  end
 #   Character.create(name: 'Luke', movie: movies.first)
