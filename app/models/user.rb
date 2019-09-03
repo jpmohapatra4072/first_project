@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   # associations
   has_many :paintings
-  belongs_to :role
+  belongs_to :role, optional: true
 
   # callbacks
   validate  :check_for_duplicate_admin, on: :create

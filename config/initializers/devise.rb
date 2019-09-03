@@ -301,16 +301,30 @@ Devise.setup do |config|
   # Add the credentials from your Google application to your secrets  
   client_id = '764091650680-61deqj3ebe1cgs98h9j94k1hbqjefd0m.apps.googleusercontent.com'
   client_secret = 'c204XW38SY0or2T4WWwoKTNf'
-  # Configure Google omniauth with proper scope
-  config.omniauth :google_oauth2, client_id, client_secret, {
-    # scope: "contacts.readonly,userinfo.email"
-    # :redirect_uri => "http://localhost:3000/users/auth/google_oauth2/callback"
-    # for heroku
-    :redirect_uri => "https://protected-falls-57926.herokuapp.com/users/auth/google_oauth2/callback"
-  }
+  
+  # Configure Google and facebook omniauth with proper scope
+  if Rails.env == "production"
+    
+    config.omniauth :google_oauth2, client_id, client_secret, {
+      # scope: "contacts.readonly,userinfo.email"
+      # for heroku
+      :redirect_uri => "https://protected-falls-57926.herokuapp.com/users/auth/google_oauth2/callback"
+    }
+    
+    config.omniauth :facebook, "397177474272014", "edd98a32ce925050050c3ce0c30d1bec", {
+      # for heroku
+      :redirect_uri => "https://protected-falls-57926.herokuapp.com/users/auth/facebook/callback"
+    }
+  elsif Rails.env == "development"
+    
+    config.omniauth :google_oauth2, client_id, client_secret, {
+      # scope: "contacts.readonly,userinfo.email"
+      :redirect_uri => "http://localhost:3000/users/auth/google_oauth2/callback"
+    }
 
-  config.omniauth :facebook, "397177474272014", "edd98a32ce925050050c3ce0c30d1bec", {
-    # for heroku
-    :redirect_uri => "https://protected-falls-57926.herokuapp.com/users/auth/facebook/callback"
-  }
+    config.omniauth :facebook, "397177474272014", "edd98a32ce925050050c3ce0c30d1bec", {
+      :redirect_uri => "http://localhost:3000/users/auth/facebook/callback"
+    }
+  end
+
 end
